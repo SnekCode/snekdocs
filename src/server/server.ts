@@ -35,23 +35,35 @@ const saveDocumentDelta = async (id, delta: string) => {
   await prisma.document.update({ where: { id }, data: { delta } });
 };
 
+const saveDocumentName = async (id, name: string) => {
+  // console.log(id, delta);
+
+  await prisma.document.update({ where: { id }, data: { name } });
+};
+
 io.on('connection', (socket) => {
   socket.on('get-document', async (documentId: string) => {
     if (documentId) {
       const document = await findOrCreateDocument(documentId);
-      // console.log('get-document', document);
+      // have the socket subscribe to the room set to the document id
       socket.join(documentId);
       socket.emit('load-document', document.delta);
 
+      // handle sending quill document changes
       socket.on('send-changes', (delta) => {
         socket.broadcast.to(documentId).emit('receive-changes', delta);
+      });
+
+      socket.on('title-change', async (title) => {
+        await saveDocumentName(documentId, title);
+        socket.broadcast.to(documentId).emit('title-receive', title);
       });
 
       socket.on('save', async (data) => {
         if (!documentId) {
           return;
         }
-        await saveDocumentDelta(documentId, JSON.stringify(data));
+        await saveDocumentDelta(documentId, data);
       });
     }
   });
