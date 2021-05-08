@@ -3,6 +3,8 @@ import GlobalStyles from '../styles/GlobalStyles';
 import AppProviders from '../components/AppProviders';
 import tw from 'twin.macro';
 import 'typeface-dm-sans';
+import '../../node_modules/quill/dist/quill.snow.css';
+import '../styles/quill.css';
 
 const MainContent = tw.div``;
 

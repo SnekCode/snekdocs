@@ -19,6 +19,7 @@ const lintTS = {
     '@typescript-eslint/no-var-requires': 'off', // turning off because we do not care if we import using es6 or common js... stupid lint
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-use-before-define': ['error', { variables: true }],
+    '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/naming-convention': [
       'error',
       {

@@ -10,3 +10,8 @@ generator client {
   provider = "prisma-client-js"
   //Must add binary for production build
 }
+
+model Document {
+  id    String @id @db.Uuid
+  delta String
+}

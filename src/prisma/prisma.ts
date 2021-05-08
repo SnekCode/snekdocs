@@ -1,18 +1,21 @@
 import { PrismaClient } from '@prisma/client';
 
-// Docs about instantiating `PrismaClient` with Next.js:
-// https://pris.ly/d/help/next-js-best-practices
+interface ICustomNodeJsGlobal extends NodeJS.Global {
+  prisma: PrismaClient;
+  // You can declare anything you need.
+}
+
+declare const global: ICustomNodeJsGlobal;
 
 let prisma: PrismaClient;
 
 if (process.env.NODE_ENV === 'production') {
   prisma = new PrismaClient();
-}
-
-if (process.env.NODE_ENV === 'development') {
+} else {
   if (!global.prisma) {
     global.prisma = new PrismaClient();
   }
+
   prisma = global.prisma;
 }
 
