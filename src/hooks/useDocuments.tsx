@@ -5,7 +5,8 @@ import { Document } from '@prisma/client';
 const useDocuments = () => {
   const { data: documents } = useQuery(
     'documents',
-    (): Promise<Document[]> => axios.get('/api/documents')
+    (): Promise<Document[]> => axios.get('/api/documents'),
+    { enabled: false }
   );
 
   return { documents };

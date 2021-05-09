@@ -1,9 +1,11 @@
 import Quill from 'quill';
+import { MutableRefObject, useRef } from 'react';
 import { useState, useCallback, useMemo } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
 
 const TOOLBAR_OPTIONS = [
+  [],
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
   [{ font: [] }],
   [{ list: 'ordered' }, { list: 'bullet' }],
@@ -22,21 +24,42 @@ const useQuillDocumentSocket = (documentId: string) => {
   >();
   const [quill, setQuill] = useState<Quill>();
 
-  const ref = useCallback((wrapper: HTMLDivElement) => {
+  const quillRef = useRef(null) as MutableRefObject<HTMLDivElement>;
+
+  const wrapperRef = useCallback((wrapper: HTMLDivElement) => {
     if (!wrapper) {
       return;
     }
 
     wrapper.innerHTML = '';
     const Q = require('quill');
+    // Set up custom Font sizes
+    const Size = Q.import('attributors/style/size');
+    Q.register(Size, true);
+    Size.whitelist = ['10px', '13px', '18px', '32px', '48px'];
+
+    // Add fonts to whitelist
+    const Font = Q.import('formats/font');
+    // We do not add Sans Serif since it is the default
+    Font.whitelist = ['inconsolata', 'roboto', 'mirza'];
+    Q.register(Font, true);
+
     const editor = document.createElement('div');
+    // add element to quillRef
+    quillRef.current = editor;
     wrapper.append(editor);
     const q = new Q(editor, {
       theme: 'snow',
-      modules: { toolbar: TOOLBAR_OPTIONS },
-    });
+      modules: {
+        toolbar: '#toolbar-container',
+        history: {
+          delay: 1000,
+          maxStack: 500,
+          userOnly: true,
+        },
+      },
+    }) as Quill;
     q.disable();
-    q.setText('');
     setQuill(q);
   }, []);
 
@@ -127,7 +150,7 @@ const useQuillDocumentSocket = (documentId: string) => {
     socket.emit('get-document', documentId);
   }, [socket, quill, documentId]);
 
-  return { ref, socket, quill };
+  return { wrapperRef, quillRef, socket, quill };
 };
 
 export default useQuillDocumentSocket;

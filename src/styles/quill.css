@@ -23,6 +23,33 @@
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
+/* Preview CSS */
+
+#preview .ql-editor {
+  width: 8.5in;
+  height: 11in;
+  padding: 1in;
+  background-color: white;
+  margin: 1rem;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+#preview .ql-container.ql-snow {
+  border: none;
+  display: flex;
+  justify-content: center;
+}
+
+#preview .ql-toolbar.ql-snow {
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #f3f3f3;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+}
+
 @page {
   margin: 1in;
 }
@@ -43,4 +70,86 @@
   .editor .ql-toolbar.ql-snow {
     display: none;
   }
+}
+
+/* Set dropdown font-families */
+
+#toolbar-container .ql-font span[data-label='Sans Serif']::before {
+  font-family: 'Sans Serif';
+}
+
+#toolbar-container .ql-font span[data-label='Inconsolata']::before {
+  font-family: 'Inconsolata';
+}
+
+#toolbar-container .ql-font span[data-label='Roboto']::before {
+  font-family: 'Roboto';
+}
+
+#toolbar-container .ql-font span[data-label='Mirza']::before {
+  font-family: 'Mirza';
+}
+
+#toolbar-container .ql-font span[data-label='Arial']::before {
+  font-family: 'Arial';
+}
+
+/* <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> */
+
+@font-face {
+  font-family: 'Roboto';
+  src: url(https://fonts.googleapis.com/css?family=Roboto);
+}
+
+.ql-snow.ql-toolbar .ql-picker-label.ql-active {
+  color: black;
+}
+
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke {
+  stroke: black;
+}
+/* Set content font-families */
+
+.ql-font-inconsolata {
+  font-family: 'Inconsolata';
+  color: black;
+}
+
+.ql-font-roboto {
+  font-family: 'Roboto';
+  color: black;
+}
+
+.ql-font-mirza {
+  font-family: 'Mirza';
+  color: black;
+}
+
+/* Custom Font sizes */
+
+/* ['10px', '13px', '18px', '32px', '48px']; */
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value='10px']::before {
+  content: 'Small';
+  font-size: 10px !important;
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value='13px']::before {
+  content: 'Normal';
+  font-size: 13px !important;
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value='18px']::before {
+  content: 'Large';
+  font-size: 18px !important;
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value='32px']::before {
+  content: 'Huge';
+  font-size: 32px !important;
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value='48px']::before {
+  content: 'Extra Huge';
+  font-size: 48px !important;
 }

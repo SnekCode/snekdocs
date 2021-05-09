@@ -1,27 +1,30 @@
-import axios from 'axios';
 import Link from 'next/link';
 import { QueryClient } from 'react-query';
 import { dehydrate } from 'react-query/hydration';
+import tw from 'twin.macro';
 import { v4 as uuidV4 } from 'uuid';
+import Card from '../components/Documents/Card';
 import useDocuments from '../hooks/useDocuments';
 import prisma from '../prisma/prisma';
 
 const index = () => {
   const { documents } = useDocuments();
 
+  const CardContainer = tw.div`flex flex-wrap justify-around`;
+
   return (
     <div>
       <h1>Snek Docs</h1>
       <Link href={`/document/${uuidV4()}`}>Create New Document</Link>
-      {documents
-        ? documents.map((d) => (
-            <div key={d.id}>
-              <Link href={`/document/${d.id}`}>
-                {d.name ? d.name : 'Untitled Document'}
-              </Link>
-            </div>
-          ))
-        : null}
+      <CardContainer>
+        {documents
+          ? documents.map((d) => (
+              <div tw="hover:(outline[steelblue])" key={d.id}>
+                <Card doc={d} />
+              </div>
+            ))
+          : null}
+      </CardContainer>
     </div>
   );
 };
