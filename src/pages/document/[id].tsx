@@ -11,7 +11,7 @@ import tw from 'twin.macro';
 
 const StyledLink = tw(Link)`cursor-pointer relative`;
 const GoHomeIcon = tw(DescriptionIcon)`text-4xl m-2 cursor-pointer`;
-const Tooltip = tw.div`absolute bg-black text-white left-1/2 w-max invisible pointer-events-none group-hover:(visible transition-all delay-700 z-50)`;
+const Tooltip = tw.div`absolute bg-black text-white w-max invisible pointer-events-none group-hover:(visible transition-all delay-700 z-50)`;
 
 const NameField = tw.input`background-color[#f3f3f3] mt-0.5 border-2 border-color[#f3f3f3] h-6 w-max hover:(border-2 border-gray-500)`;
 
@@ -30,8 +30,8 @@ const DocumentById = ({ doc, id }) => {
     if (socket && process.browser) {
       socket.emit('title-change', savedTitle);
 
-      const handler = (name) => {
-        setTitle(name);
+      const handler = (newName) => {
+        setTitle(newName);
       };
 
       // listens for changes emitted from the server
@@ -45,10 +45,10 @@ const DocumentById = ({ doc, id }) => {
 
   return (
     <>
-      <div>
+      <div tw="flex">
         <StyledLink href="/">
           <div tw="relative" className="group">
-            <GoHomeIcon>TEXT</GoHomeIcon>
+            <GoHomeIcon />
             <Tooltip>Docs Home</Tooltip>
           </div>
         </StyledLink>
