@@ -7,7 +7,7 @@ const TextEdit: React.FC<{
   return (
     <div>
       <Toolbar quill={quill} />
-      <div ref={wrapperRef} className="editor"></div>;
+      <div id="canvas" ref={wrapperRef} className="editor"></div>;
     </div>
   );
 };

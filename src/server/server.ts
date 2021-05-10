@@ -65,6 +65,14 @@ io.on('connection', (socket) => {
         }
         await saveDocumentDelta(documentId, data);
       });
+      socket.on('snapshot', async (snapShot: string) => {
+        console.log('saving snapshot');
+
+        await prisma.document.update({
+          where: { id: documentId },
+          data: { snapShot },
+        });
+      });
     }
   });
 });
