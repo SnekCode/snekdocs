@@ -1,9 +1,8 @@
-import Quill from 'quill';
-import Toolbar from './Toolbar';
+import Toolbar, { ICustomQuill } from './Toolbar';
 
 const TextEdit: React.FC<{
   wrapperRef: any;
-  quill: Quill;
+  quill: ICustomQuill;
 }> = ({ wrapperRef, quill }) => {
   return (
     <div>

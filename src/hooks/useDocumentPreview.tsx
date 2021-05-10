@@ -1,7 +1,11 @@
+import { Document } from '.prisma/client';
 import Quill from 'quill';
-import React, { useCallback, useState } from 'react';
+import Delta from 'quill-delta';
+import { useCallback, useState } from 'react';
+import { useMemo } from 'react';
+import setQuillOptions from './setQuillOptions';
 
-const useDocumentPreview = () => {
+const useDocumentPreview = (doc: Document) => {
   const [quill, setQuill] = useState<Quill>();
 
   // set up preview quill
@@ -9,6 +13,8 @@ const useDocumentPreview = () => {
     if (!wrapper) {
       return;
     }
+
+    setQuillOptions();
 
     wrapper.innerHTML = '';
     const Q = require('quill');
@@ -23,6 +29,12 @@ const useDocumentPreview = () => {
     q.disable();
     setQuill(q);
   }, []);
+
+  useMemo(() => {
+    if (doc && quill) {
+      quill.setContents(doc.delta as Delta);
+    }
+  }, [doc, quill]);
 
   return { wrapperRef, quill };
 };

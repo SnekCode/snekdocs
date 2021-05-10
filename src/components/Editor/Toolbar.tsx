@@ -6,7 +6,12 @@ import tw from 'twin.macro';
 const StyledUndo = tw(Undo)`text-black`;
 const StyledRedo = tw(Redo)`text-black`;
 
-const Toolbar: React.FC<{ quill: Quill }> = ({ quill }) => {
+export interface ICustomQuill extends Quill {
+  history;
+  // You can declare anything you need.
+}
+
+const Toolbar: React.FC<{ quill: ICustomQuill }> = ({ quill }) => {
   return (
     <div id="toolbar-container">
       <div>

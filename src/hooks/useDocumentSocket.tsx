@@ -3,6 +3,8 @@ import { MutableRefObject, useRef } from 'react';
 import { useState, useCallback, useMemo } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
+import { ICustomQuill } from '../components/Editor/Toolbar';
+import setQuillOptions from './setQuillOptions';
 
 const TOOLBAR_OPTIONS = [
   [],
@@ -22,7 +24,7 @@ const useQuillDocumentSocket = (documentId: string) => {
   const [socket, setSocket] = useState<
     Socket<DefaultEventsMap, DefaultEventsMap>
   >();
-  const [quill, setQuill] = useState<Quill>();
+  const [quill, setQuill] = useState<ICustomQuill>();
 
   const quillRef = useRef(null) as MutableRefObject<HTMLDivElement>;
 
@@ -31,18 +33,11 @@ const useQuillDocumentSocket = (documentId: string) => {
       return;
     }
 
+    setQuillOptions();
+
     wrapper.innerHTML = '';
     const Q = require('quill');
     // Set up custom Font sizes
-    const Size = Q.import('attributors/style/size');
-    Q.register(Size, true);
-    Size.whitelist = ['10px', '13px', '18px', '32px', '48px'];
-
-    // Add fonts to whitelist
-    const Font = Q.import('formats/font');
-    // We do not add Sans Serif since it is the default
-    Font.whitelist = ['inconsolata', 'roboto', 'mirza'];
-    Q.register(Font, true);
 
     const editor = document.createElement('div');
     // add element to quillRef
@@ -58,7 +53,7 @@ const useQuillDocumentSocket = (documentId: string) => {
           userOnly: true,
         },
       },
-    }) as Quill;
+    }) as ICustomQuill;
     q.disable();
     setQuill(q);
   }, []);
@@ -137,7 +132,6 @@ const useQuillDocumentSocket = (documentId: string) => {
     }
     // quill.setContents(document);
     socket.once('load-document', (data) => {
-      console.log('loading data', data);
       if (data) {
         quill.setContents(data);
       }

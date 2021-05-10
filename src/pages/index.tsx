@@ -1,4 +1,6 @@
+import axios from 'axios';
 import Link from 'next/link';
+import { useMemo } from 'react';
 import { QueryClient } from 'react-query';
 import { dehydrate } from 'react-query/hydration';
 import tw from 'twin.macro';
@@ -19,9 +21,15 @@ const index = () => {
       <CardContainer>
         {documents
           ? documents.map((d) => (
-              <div tw="hover:(outline[steelblue])" key={d.id}>
-                <Card doc={d} />
-              </div>
+              <Link
+                tw="border-2 hover:(border-blue-600) max-h-full max-w-full"
+                key={d.id}
+                href={`/document/${d.id}`}
+              >
+                <div>
+                  <Card doc={d} />
+                </div>
+              </Link>
             ))
           : null}
       </CardContainer>

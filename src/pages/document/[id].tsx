@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import TextEdit from '../../components/Editor/TextEdit';
 import { validate } from 'uuid';
 import useQuillDocumentSocket from '../../hooks/useDocumentSocket';
@@ -16,22 +15,19 @@ const Tooltip = tw.div`absolute bg-black text-white left-1/2 w-max invisible poi
 
 const NameField = tw.input`background-color[#f3f3f3] mt-0.5 border-2 border-color[#f3f3f3] h-6 w-max hover:(border-2 border-gray-500)`;
 
-const Document = ({ documentName }) => {
-  const router = useRouter();
-  const { id } = router.query;
-  const documentId: string = id as string;
-
-  const [title, setTitle] = useState(documentName);
+const DocumentById = ({ doc, id }) => {
+  const name = doc?.name ?? '';
+  const [title, setTitle] = useState(name);
   // state to trigger socket emit.  Tied to on blur of title input
-  const [savedTitle, setSavedTitle] = useState(documentName);
+  const [savedTitle, setSavedTitle] = useState(name);
 
   const { wrapperRef: ref, quillRef, socket, quill } = useQuillDocumentSocket(
-    documentId
+    id
   );
 
   // set up socket for title
   useMemo(() => {
-    if (socket) {
+    if (socket && process.browser) {
       socket.emit('title-change', savedTitle);
 
       const handler = (name) => {
@@ -49,7 +45,7 @@ const Document = ({ documentName }) => {
 
   return (
     <>
-      <div tw="">
+      <div>
         <StyledLink href="/">
           <div tw="relative" className="group">
             <GoHomeIcon>TEXT</GoHomeIcon>
@@ -85,11 +81,9 @@ export const getServerSideProps = async (context) => {
     context.res.redirect(`/`);
   }
 
-  const documentName = await (
-    await prisma.document.findUnique({ where: { id } })
-  )?.name;
+  const doc = await prisma.document.findUnique({ where: { id } });
 
-  return { props: { documentName } };
+  return { props: { doc, id } };
 };
 
-export default Document;
+export default DocumentById;
