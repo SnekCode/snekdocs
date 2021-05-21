@@ -1,15 +1,7 @@
 // hook for useUser
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { createContext, useState, useRef, useMemo } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
-import { useSocket } from './useSocket';
 
 interface ISocketContext {
   isLoading: boolean;
@@ -41,8 +33,6 @@ function SocketContextProvider({ children }: { children: React.ReactNode }) {
   });
 
   useMemo(() => {
-    console.log('useMemo for socket provider');
-
     if (!state.socket) {
       const socket = io();
       setState((prevState) => ({

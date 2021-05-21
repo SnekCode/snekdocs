@@ -10,7 +10,7 @@ const CustomStyles = createGlobalStyle`
     background-color: #f3f3f3;
     margin: 0;
     font-family: ${theme`fontFamily.default`};
-    color: ${theme`colors.purple.500`};
+    /* color: ${theme`colors.purple.500`}; */
     ${tw`antialiased`}
   }
 `;

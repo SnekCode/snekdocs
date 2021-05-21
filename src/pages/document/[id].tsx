@@ -10,7 +10,9 @@ import 'twin.macro';
 import tw from 'twin.macro';
 
 const StyledLink = tw(Link)`cursor-pointer relative`;
-const GoHomeIcon = tw(DescriptionIcon)`text-4xl m-2 cursor-pointer`;
+const GoHomeIcon = tw(
+  DescriptionIcon
+)`text-4xl m-2 cursor-pointer text-purple-500`;
 const Tooltip = tw.div`absolute bg-black text-white w-max invisible pointer-events-none group-hover:(visible transition-all delay-700 z-50)`;
 
 const NameField = tw.input`background-color[#f3f3f3] mt-0.5 border-2 border-color[#f3f3f3] h-6 w-max hover:(border-2 border-gray-500)`;

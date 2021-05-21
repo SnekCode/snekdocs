@@ -1,7 +1,8 @@
+import { LegacyRef } from 'react';
 import Toolbar, { ICustomQuill } from './Toolbar';
 
 const TextEdit: React.FC<{
-  wrapperRef: any;
+  wrapperRef: LegacyRef<HTMLDivElement>;
   quill: ICustomQuill;
 }> = ({ wrapperRef, quill }) => {
   return (

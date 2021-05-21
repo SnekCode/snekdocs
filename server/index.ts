@@ -3,7 +3,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const next = require('next');
 import { Document } from '.prisma/client';
-import prisma from '../prisma/prisma';
+import prisma from '../src/prisma/prisma';
 
 // set up dev
 const dev = process.env.NODE_ENV !== 'production';
@@ -30,14 +30,10 @@ const findOrCreateDocument = async (id): Promise<Document> => {
 };
 
 const saveDocumentDelta = async (id, delta: string) => {
-  // console.log(id, delta);
-
   await prisma.document.update({ where: { id }, data: { delta } });
 };
 
 const saveDocumentName = async (id, name: string) => {
-  // console.log(id, delta);
-
   await prisma.document.update({ where: { id }, data: { name } });
 };
 
@@ -66,8 +62,6 @@ io.on('connection', (socket) => {
         await saveDocumentDelta(documentId, data);
       });
       socket.on('snapshot', async (snapShot: string) => {
-        console.log('saving snapshot');
-
         await prisma.document.update({
           where: { id: documentId },
           data: { snapShot },

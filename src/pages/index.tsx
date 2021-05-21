@@ -1,6 +1,4 @@
-import axios from 'axios';
 import Link from 'next/link';
-import { useMemo } from 'react';
 import { QueryClient } from 'react-query';
 import { dehydrate } from 'react-query/hydration';
 import tw from 'twin.macro';

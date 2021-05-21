@@ -7,20 +7,6 @@ import setQuillOptions from './setQuillOptions';
 import { debounce } from '@material-ui/core';
 import domtoimage from 'dom-to-image';
 
-const TOOLBAR_OPTIONS = [
-  [],
-  [{ header: [1, 2, 3, 4, 5, 6, false] }],
-  [{ font: [] }],
-  [{ list: 'ordered' }, { list: 'bullet' }],
-  [{ color: [] }, { background: [] }],
-  [{ script: 'sub' }, { script: 'super' }],
-  [{ align: [] }],
-  ['image', 'blockquote', 'code-block'],
-  ['clean'],
-];
-
-const SAVE_INIT_MS = 2000;
-
 const useQuillDocumentSocket = (documentId: string) => {
   const [socket, setSocket] = useState<
     Socket<DefaultEventsMap, DefaultEventsMap>
@@ -85,19 +71,18 @@ const useQuillDocumentSocket = (documentId: string) => {
       };
 
       const save = (delta, oldDelta, source) => {
+        if (source !== 'user') {
+          return;
+        }
         domtoimage
           .toPng(document.getElementById('canvas'))
           .then(function (dataUrl) {
-            console.log('sending snapshot');
             socket.emit('snapshot', dataUrl);
           })
           .catch(function (error) {
             console.error('oops, something went wrong!', error);
           });
 
-        if (source !== 'user') {
-          return;
-        }
         socket.emit('save', quill.getContents());
       };
       if (process.browser) {
